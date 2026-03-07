@@ -20,6 +20,8 @@ function renderApp() {
 /* ═══ HEADER ═══ */
 function renderHeader() {
   var agent = getAgent(currentAgent);
+  var session = getSession();
+  var userName = session ? session.name : '';
   return '<div class="logo-area">' +
     '<button class="btn-icon" onclick="toggleSidebar()" style="display:none;" id="menuBtn">☰</button>' +
     '<div class="logo-icon">⚡</div>' +
@@ -31,6 +33,10 @@ function renderHeader() {
     '<span style="font-size:0.8rem;color:var(--text);">' + agent.name + '</span>' +
     '<span style="font-size:0.7rem;color:var(--text-dim);">— ' + agent.role + '</span></div>' +
     '<div style="display:flex;align-items:center;gap:6px;"><span class="status-dot"></span><span class="status-text">IA Online</span></div>' +
+    '<div style="display:flex;align-items:center;gap:8px;padding:6px 12px;background:var(--bg-3);border-radius:20px;border:1px solid var(--border);">' +
+    '<span style="font-size:0.8rem;">👑 ' + userName + '</span>' +
+    '<button onclick="logoutUser()" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:0.75rem;padding:2px 6px;" title="Sair">🚪</button>' +
+    '</div>' +
     '</div>';
 }
 
@@ -254,6 +260,10 @@ window.addEventListener('resize', checkResponsive);
 
 /* ═══ INIT ═══ */
 document.addEventListener('DOMContentLoaded', function() {
-  renderApp();
+  if (isLoggedIn()) {
+    renderApp();
+  } else {
+    renderLoginScreen();
+  }
   checkResponsive();
 });
