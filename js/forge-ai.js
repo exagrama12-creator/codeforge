@@ -2,11 +2,20 @@
    CodeForge — IA (Google Gemini — sem restrição)
    ═══════════════════════════════════════════════════════════ */
 
-var FORGE_API_KEY = 'AIzaSyAAFMK53kIx_-ZicEVGwxnyitBgmaYchDo';
+var FORGE_API_KEY = ''; // User sets via UI
 var FORGE_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.0-flash'];
+
+function getForgeApiKey() {
+  return localStorage.getItem('codeforge_apikey') || '';
+}
+function saveForgeApiKey(k) {
+  localStorage.setItem('codeforge_apikey', k);
+}
 
 async function callForgeAI(userMessage, agentId) {
   agentId = agentId || currentAgent;
+  var apiKey = getForgeApiKey();
+  if (!apiKey) throw new Error('Configure sua chave API! Clique em ⚙️ no menu.');
   var systemPrompt = getAgentSystemPrompt(agentId);
   
   // Pegar histórico do agente
@@ -28,7 +37,7 @@ async function callForgeAI(userMessage, agentId) {
   // Tentar múltiplos modelos
   for (var i = 0; i < FORGE_MODELS.length; i++) {
     var model = FORGE_MODELS[i];
-    var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + FORGE_API_KEY;
+    var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
     try {
       var resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
       if (resp.ok) {

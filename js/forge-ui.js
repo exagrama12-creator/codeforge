@@ -66,6 +66,7 @@ function renderSidebar() {
   h += '<div class="sidebar-item ' + (currentPanel==='editor'?'active':'') + '" onclick="switchPanel(\'editor\')"><div class="agent-icon" style="background:rgba(99,102,241,0.15);color:#818cf8;">💻</div><div><span class="agent-name">Editor</span><span class="agent-role">Escreva e teste código</span></div></div>';
   h += '<div class="sidebar-item ' + (currentPanel==='projects'?'active':'') + '" onclick="switchPanel(\'projects\')"><div class="agent-icon" style="background:rgba(249,115,22,0.15);color:#f97316;">📁</div><div><span class="agent-name">Projetos</span><span class="agent-role">Seus projetos salvos</span></div></div>';
   h += '<div class="sidebar-item ' + (currentPanel==='team'?'active':'') + '" onclick="switchPanel(\'team\')"><div class="agent-icon" style="background:rgba(236,72,153,0.15);color:#ec4899;">👥</div><div><span class="agent-name">Equipe</span><span class="agent-role">Conheça os agentes</span></div></div>';
+  h += '<div class="sidebar-item ' + (currentPanel==='settings'?'active':'') + '" onclick="switchPanel(\'settings\')"><div class="agent-icon" style="background:rgba(249,115,22,0.15);color:#f59e0b;">⚙️</div><div><span class="agent-name">Config</span><span class="agent-role">Chave API / Ajustes</span></div></div>';
   h += '</div>';
 
   return h;
@@ -76,7 +77,8 @@ function renderMainPanels() {
   return '<div class="panel" id="panel-chat">' + renderChatPanel() + '</div>' +
     '<div class="panel" id="panel-editor">' + renderEditorPanel() + '</div>' +
     '<div class="panel" id="panel-projects">' + renderProjectsPanel() + '</div>' +
-    '<div class="panel" id="panel-team">' + renderTeamPanel() + '</div>';
+    '<div class="panel" id="panel-team">' + renderTeamPanel() + '</div>' +
+    '<div class="panel" id="panel-settings">' + renderSettingsPanel() + '</div>';
 }
 
 /* ═══ CHAT PANEL ═══ */
@@ -149,10 +151,12 @@ function renderChatMessages() {
   var agent = getAgent(currentAgent);
 
   if (!chat.length) {
+    var hasKey = !!getForgeApiKey();
+    var keyWarning = hasKey ? '' : '<div style="margin-top:1rem;padding:12px 16px;background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.2);border-radius:8px;font-size:0.8rem;color:#f59e0b;">⚠️ <strong>Configure sua chave API</strong> para ativar a IA! Vá em <a href="#" onclick="switchPanel(\'settings\');return false;" style="color:var(--primary-light);">⚙️ Config</a> no menu lateral.</div>';
     c.innerHTML = '<div style="text-align:center;padding:4rem 1rem;color:var(--text-dim);">' +
       '<div style="font-size:3.5rem;margin-bottom:1rem;">' + agent.icon + '</div>' +
       '<div style="font-size:1.2rem;font-weight:700;color:' + agent.color + ';margin-bottom:0.5rem;">' + agent.name + ' — ' + agent.role + '</div>' +
-      '<div style="font-size:0.9rem;max-width:500px;margin:0 auto;line-height:1.7;">' + agent.desc + '<br><br>Fale em português o que precisa!</div></div>';
+      '<div style="font-size:0.9rem;max-width:500px;margin:0 auto;line-height:1.7;">' + agent.desc + '<br><br>Fale em português o que precisa!' + keyWarning + '</div></div>';
     return;
   }
 
@@ -196,6 +200,59 @@ function formatMessage(text) {
   return text;
 }
 
+/* ═══ SETTINGS PANEL ═══ */
+function renderSettingsPanel() {
+  var key = getForgeApiKey();
+  var masked = key ? key.substring(0,8) + '...' + key.substring(key.length-4) : '';
+  var h = '';
+  h += '<div class="panel-header"><h2>⚙️ Configurações</h2><p>Configure sua chave API para ativar a IA</p></div>';
+
+  h += '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-bottom:1rem;">';
+  h += '<h3 style="font-size:1rem;margin-bottom:1rem;display:flex;align-items:center;gap:8px;">🔑 Chave API Google Gemini <span style="font-size:0.75rem;padding:3px 10px;border-radius:12px;background:' + (key ? 'rgba(16,185,129,0.15);color:var(--success);' : 'rgba(239,68,68,0.15);color:var(--danger);') + '">' + (key ? '✅ Ativa' : '❌ Pendente') + '</span></h3>';
+
+  if (key) {
+    h += '<div style="font-size:0.85rem;color:var(--text-dim);margin-bottom:1rem;">Chave atual: <code style="background:var(--bg-3);padding:2px 8px;border-radius:4px;">' + masked + '</code></div>';
+    h += '<button class="btn btn-secondary" onclick="removeForgeApiKey()">🗑️ Remover Chave</button>';
+  } else {
+    h += '<div style="font-size:0.85rem;line-height:1.8;margin-bottom:1rem;">';
+    h += '<strong>Como obter (100% grátis):</strong><br>';
+    h += '1️⃣ Acesse <a href="https://aistudio.google.com/apikey" target="_blank" style="color:var(--primary-light);">aistudio.google.com/apikey</a><br>';
+    h += '2️⃣ Login com conta Google<br>';
+    h += '3️⃣ Clique em <strong>"Create API Key in new project"</strong><br>';
+    h += '4️⃣ Copie e cole abaixo</div>';
+    h += '<div style="display:flex;gap:8px;"><input type="text" id="forgeApiKeyInput" placeholder="Cole a chave aqui (AIza...)" style="flex:1;padding:12px;background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius-sm);color:var(--text);font-size:0.9rem;outline:none;"><button class="btn btn-primary" onclick="setForgeApiKey()">💾 Salvar</button></div>';
+  }
+  h += '</div>';
+
+  h += '<div style="background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;">';
+  h += '<h3 style="font-size:1rem;margin-bottom:0.5rem;">ℹ️ Sobre a Chave</h3>';
+  h += '<div style="font-size:0.8rem;color:var(--text-dim);line-height:1.7;">';
+  h += '• A chave fica salva <strong>apenas no seu navegador</strong> (localStorage)<br>';
+  h += '• Nunca é enviada pra nenhum servidor nosso<br>';
+  h += '• Google Gemini oferece <strong>60 requisições por minuto grátis</strong><br>';
+  h += '• Se mudar de navegador, precisa colocar novamente</div>';
+  h += '</div>';
+
+  return h;
+}
+
+function setForgeApiKey() {
+  var input = document.getElementById('forgeApiKeyInput');
+  if (!input) return;
+  var k = input.value.trim();
+  if (!k || k.length < 20) { showToast('Chave inválida!', 'error'); return; }
+  saveForgeApiKey(k);
+  showToast('✅ Chave salva! IA ativada!', 'success');
+  switchPanel('settings');
+  renderApp();
+}
+
+function removeForgeApiKey() {
+  localStorage.removeItem('codeforge_apikey');
+  showToast('Chave removida.', 'info');
+  renderApp();
+}
+
 /* ═══ NAVIGATION ═══ */
 function switchPanel(panel) {
   currentPanel = panel;
@@ -204,7 +261,7 @@ function switchPanel(panel) {
   panels.forEach(function(p) { p.classList.remove('active'); });
   
   // Show target
-  var target = panel === 'editor' || panel === 'projects' || panel === 'team' ? panel : 'chat';
+  var target = panel === 'editor' || panel === 'projects' || panel === 'team' || panel === 'settings' ? panel : 'chat';
   var el = document.getElementById('panel-' + target);
   if (el) el.classList.add('active');
 
