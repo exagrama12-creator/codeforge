@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodeForge & LinksHub Pro — Promo</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+      font-family:'Inter',sans-serif;
+      background:#000;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      gap:3rem;
+      padding:2rem;
+    }
+
+    h1.page-title {
+      color:#fff;
+      font-size:1.5rem;
+      text-align:center;
+      margin-bottom:1rem;
+    }
+    p.page-sub {
+      color:#888;
+      font-size:0.85rem;
+      text-align:center;
+      margin-bottom:2rem;
+      max-width:500px;
+    }
+
+    /* ═══ FLYER CONTAINER — Story 1080x1920 aspect ═══ */
+    .flyer {
+      width:360px;
+      height:640px;
+      border-radius:20px;
+      position:relative;
+      overflow:hidden;
+      box-shadow:0 20px 80px rgba(0,0,0,0.8);
+      flex-shrink:0;
+    }
+
+    .flyers-row {
+      display:flex;
+      gap:2rem;
+      flex-wrap:wrap;
+      justify-content:center;
+    }
+
+    /* ═══ FLYER 1 — LINKSHUB PRO ═══ */
+    .flyer-linkshub {
+      background:linear-gradient(160deg,#0a0a1a 0%,#0f0f2e 40%,#1a0a2e 100%);
+    }
+    .flyer-linkshub::before {
+      content:'';
+      position:absolute;
+      top:-50%;
+      left:-50%;
+      width:200%;
+      height:200%;
+      background:radial-gradient(circle at 30% 20%,rgba(99,102,241,0.15) 0%,transparent 50%),
+                  radial-gradient(circle at 70% 80%,rgba(14,165,233,0.1) 0%,transparent 50%);
+      animation:rotateBg 20s linear infinite;
+    }
+    @keyframes rotateBg { to { transform:rotate(360deg); } }
+
+    .flyer-content {
+      position:relative;
+      z-index:2;
+      height:100%;
+      display:flex;
+      flex-direction:column;
+      padding:2rem 1.5rem;
+    }
+
+    /* Badge */
+    .badge {
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      padding:6px 14px;
+      border-radius:20px;
+      font-size:0.6rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:1.5px;
+      width:fit-content;
+      animation:fadeSlideDown 0.8s ease-out;
+    }
+    .badge-purple { background:rgba(99,102,241,0.2); color:#818cf8; border:1px solid rgba(99,102,241,0.3); }
+    .badge-green { background:rgba(16,185,129,0.2); color:#34d399; border:1px solid rgba(16,185,129,0.3); }
+    .badge-red { background:rgba(239,68,68,0.2); color:#f87171; border:1px solid rgba(239,68,68,0.3); }
+
+    /* Emoji hero */
+    .hero-emoji {
+      font-size:4rem;
+      margin:1.5rem 0 1rem;
+      animation:bounceIn 1s ease-out;
+      filter:drop-shadow(0 0 30px rgba(99,102,241,0.5));
+    }
+
+    .flyer-title {
+      font-size:1.8rem;
+      font-weight:900;
+      line-height:1.1;
+      margin-bottom:0.5rem;
+      animation:fadeSlideUp 0.8s ease-out 0.2s both;
+    }
+    .flyer-title .gradient-text {
+      background:linear-gradient(135deg,#818cf8,#0ea5e9);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .flyer-title-green .gradient-text {
+      background:linear-gradient(135deg,#34d399,#0ea5e9);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+    .flyer-title-red .gradient-text {
+      background:linear-gradient(135deg,#f87171,#f59e0b);
+      -webkit-background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-clip:text;
+    }
+
+    .flyer-subtitle {
+      color:#a1a1aa;
+      font-size:0.85rem;
+      line-height:1.6;
+      margin-bottom:1.5rem;
+      animation:fadeSlideUp 0.8s ease-out 0.4s both;
+    }
+
+    /* Features */
+    .features {
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-bottom:auto;
+      animation:fadeSlideUp 0.8s ease-out 0.6s both;
+    }
+    .feature {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 14px;
+      border-radius:12px;
+      font-size:0.78rem;
+      color:#e4e4e7;
+      font-weight:500;
+    }
+    .feature-purple { background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.15); }
+    .feature-green { background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.15); }
+    .feature-red { background:rgba(239,68,68,0.08); border:1px solid rgba(239,68,68,0.15); }
+    .feature-icon { font-size:1.1rem; }
+
+    /* CTA */
+    .cta-area {
+      margin-top:1.5rem;
+      animation:fadeSlideUp 0.8s ease-out 0.8s both;
+    }
+    .cta-btn {
+      display:block;
+      width:100%;
+      padding:14px;
+      border-radius:14px;
+      border:none;
+      font-family:'Inter',sans-serif;
+      font-size:0.9rem;
+      font-weight:700;
+      color:white;
+      text-align:center;
+      cursor:pointer;
+      text-decoration:none;
+      position:relative;
+      overflow:hidden;
+    }
+    .cta-purple { background:linear-gradient(135deg,#6366f1,#0ea5e9); }
+    .cta-green { background:linear-gradient(135deg,#10b981,#0ea5e9); }
+    .cta-red { background:linear-gradient(135deg,#ef4444,#f59e0b); }
+    .cta-btn::after {
+      content:'';
+      position:absolute;
+      top:0;left:-100%;
+      width:100%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);
+      animation:shine 3s infinite;
+    }
+    @keyframes shine { 0%{left:-100%} 50%{left:100%} 100%{left:100%} }
+
+    .cta-url {
+      text-align:center;
+      margin-top:10px;
+      font-size:0.65rem;
+      color:#52525b;
+      letter-spacing:0.5px;
+    }
+
+    /* Bottom brand */
+    .flyer-brand {
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      margin-top:1rem;
+      font-size:0.6rem;
+      color:#3f3f46;
+      animation:fadeSlideUp 0.8s ease-out 1s both;
+    }
+
+    /* ═══ FLYER 2 — CODEFORGE ═══ */
+    .flyer-codeforge {
+      background:linear-gradient(160deg,#0a1a0f 0%,#0f1a2e 40%,#0a1a1a 100%);
+    }
+    .flyer-codeforge::before {
+      content:'';
+      position:absolute;
+      top:-50%;left:-50%;
+      width:200%;height:200%;
+      background:radial-gradient(circle at 60% 30%,rgba(16,185,129,0.12) 0%,transparent 50%),
+                  radial-gradient(circle at 30% 70%,rgba(99,102,241,0.08) 0%,transparent 50%);
+      animation:rotateBg 25s linear infinite reverse;
+    }
+
+    /* ═══ FLYER 3 — TITANS ═══ */
+    .flyer-titans {
+      background:linear-gradient(160deg,#1a0a0a 0%,#2e0f0f 40%,#1a0a1a 100%);
+    }
+    .flyer-titans::before {
+      content:'';
+      position:absolute;
+      top:-50%;left:-50%;
+      width:200%;height:200%;
+      background:radial-gradient(circle at 40% 40%,rgba(239,68,68,0.12) 0%,transparent 50%),
+                  radial-gradient(circle at 70% 60%,rgba(245,158,11,0.08) 0%,transparent 50%);
+      animation:rotateBg 22s linear infinite;
+    }
+
+    /* ═══ PARTICLES ═══ */
+    .particles {
+      position:absolute;
+      top:0;left:0;right:0;bottom:0;
+      z-index:1;
+      overflow:hidden;
+    }
+    .particle {
+      position:absolute;
+      width:3px;
+      height:3px;
+      border-radius:50%;
+      opacity:0.4;
+      animation:float 8s infinite;
+    }
+    @keyframes float {
+      0%,100%{transform:translateY(0) scale(1);opacity:0.4}
+      50%{transform:translateY(-100px) scale(1.5);opacity:0.1}
+    }
+
+    /* ═══ ANIMATIONS ═══ */
+    @keyframes fadeSlideDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes bounceIn { 0%{opacity:0;transform:scale(0.3)} 50%{transform:scale(1.05)} 70%{transform:scale(0.95)} 100%{opacity:1;transform:scale(1)} }
+
+    /* ═══ ROTEIRO ═══ */
+    .roteiro {
+      max-width:700px;
+      background:#111;
+      border:1px solid #333;
+      border-radius:16px;
+      padding:2rem;
+      color:#e4e4e7;
+    }
+    .roteiro h2 { font-size:1.2rem; margin-bottom:1rem; color:#818cf8; }
+    .roteiro h3 { font-size:0.9rem; margin:1rem 0 0.5rem; color:#34d399; }
+    .roteiro p { font-size:0.8rem; line-height:1.7; color:#a1a1aa; margin-bottom:0.5rem; }
+    .roteiro .narration { font-style:italic; color:#f59e0b; border-left:3px solid #f59e0b; padding-left:12px; margin:8px 0; }
+    .roteiro .time { font-size:0.65rem; color:#6366f1; font-weight:700; }
+
+    /* ═══ SCREENSHOT BTN ═══ */
+    .screenshot-tip {
+      color:#666;
+      font-size:0.7rem;
+      text-align:center;
+      margin-top:1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="page-title">📸 Flyers Profissionais — Pronto pra Postar</h1>
+  <p class="page-sub">Clique com botão direito → "Salvar imagem" ou tire print (Ctrl+Shift+S no Chrome) de cada flyer</p>
+
+  <div class="flyers-row">
+
+    <!-- ═══ FLYER 1: LINKSHUB PRO ═══ -->
+    <div class="flyer flyer-linkshub">
+      <div class="particles">
+        <div class="particle" style="top:10%;left:20%;background:#818cf8;animation-delay:0s;"></div>
+        <div class="particle" style="top:30%;left:80%;background:#0ea5e9;animation-delay:2s;"></div>
+        <div class="particle" style="top:60%;left:15%;background:#818cf8;animation-delay:4s;"></div>
+        <div class="particle" style="top:80%;left:70%;background:#0ea5e9;animation-delay:1s;"></div>
+        <div class="particle" style="top:45%;left:50%;background:#818cf8;animation-delay:3s;"></div>
+      </div>
+      <div class="flyer-content">
+        <div class="badge badge-purple">🔗 Novo • Grátis</div>
+        <div class="hero-emoji">🔗</div>
+        <div class="flyer-title">
+          <span class="gradient-text">LinksHub Pro</span><br>
+          <span style="color:#fff;font-size:0.9rem;font-weight:600;">Diretório de Links com IA</span>
+        </div>
+        <div class="flyer-subtitle">Todos os melhores sites da internet organizados de A-Z. Com inteligência artificial que gerencia tudo.</div>
+        <div class="features">
+          <div class="feature feature-purple"><span class="feature-icon">🧠</span> IA real que entende português</div>
+          <div class="feature feature-purple"><span class="feature-icon">🤖</span> 9 agentes trabalhando 24h</div>
+          <div class="feature feature-purple"><span class="feature-icon">🔍</span> Busca inteligente A-Z</div>
+          <div class="feature feature-purple"><span class="feature-icon">📱</span> Funciona no celular</div>
+        </div>
+        <div class="cta-area">
+          <a class="cta-btn cta-purple" href="https://exagrama12-creator.github.io/linkshubpro/" target="_blank">Acessar Grátis →</a>
+          <div class="cta-url">exagrama12-creator.github.io/linkshubpro</div>
+        </div>
+        <div class="flyer-brand">⚡ Powered by IA Real</div>
+      </div>
+    </div>
+
+    <!-- ═══ FLYER 2: CODEFORGE ═══ -->
+    <div class="flyer flyer-codeforge">
+      <div class="particles">
+        <div class="particle" style="top:15%;left:30%;background:#34d399;animation-delay:1s;"></div>
+        <div class="particle" style="top:40%;left:75%;background:#0ea5e9;animation-delay:3s;"></div>
+        <div class="particle" style="top:70%;left:20%;background:#34d399;animation-delay:0s;"></div>
+        <div class="particle" style="top:85%;left:60%;background:#818cf8;animation-delay:2s;"></div>
+        <div class="particle" style="top:25%;left:55%;background:#34d399;animation-delay:4s;"></div>
+      </div>
+      <div class="flyer-content">
+        <div class="badge badge-green">⚡ Software House • IA</div>
+        <div class="hero-emoji" style="filter:drop-shadow(0 0 30px rgba(16,185,129,0.5));">⚡</div>
+        <div class="flyer-title flyer-title-green">
+          <span class="gradient-text">CodeForge</span><br>
+          <span style="color:#fff;font-size:0.9rem;font-weight:600;">Sua Empresa de Programação</span>
+        </div>
+        <div class="flyer-subtitle">10 programadores de IA prontos pra criar qualquer código. Fale em português, receba código pronto.</div>
+        <div class="features">
+          <div class="feature feature-green"><span class="feature-icon">🎨</span> Frontend, Backend, Mobile</div>
+          <div class="feature feature-green"><span class="feature-icon">🔥</span> 10 agentes especializados</div>
+          <div class="feature feature-green"><span class="feature-icon">💻</span> Editor de código integrado</div>
+          <div class="feature feature-green"><span class="feature-icon">🇧🇷</span> Fale em português natural</div>
+        </div>
+        <div class="cta-area">
+          <a class="cta-btn cta-green" href="https://exagrama12-creator.github.io/codeforge/" target="_blank">Programar Agora →</a>
+          <div class="cta-url">exagrama12-creator.github.io/codeforge</div>
+        </div>
+        <div class="flyer-brand">⚡ 10 Devs de IA • Zero Custo</div>
+      </div>
+    </div>
+
+    <!-- ═══ FLYER 3: TITANS ═══ -->
+    <div class="flyer flyer-titans">
+      <div class="particles">
+        <div class="particle" style="top:20%;left:25%;background:#f87171;animation-delay:2s;"></div>
+        <div class="particle" style="top:50%;left:70%;background:#f59e0b;animation-delay:0s;"></div>
+        <div class="particle" style="top:75%;left:35%;background:#f87171;animation-delay:3s;"></div>
+        <div class="particle" style="top:35%;left:85%;background:#f59e0b;animation-delay:1s;"></div>
+        <div class="particle" style="top:60%;left:10%;background:#f87171;animation-delay:4s;"></div>
+      </div>
+      <div class="flyer-content">
+        <div class="badge badge-red">🛡️ Segurança • Proteção</div>
+        <div class="hero-emoji" style="filter:drop-shadow(0 0 30px rgba(239,68,68,0.5));">🛡️</div>
+        <div class="flyer-title flyer-title-red">
+          <span class="gradient-text">TITANS</span><br>
+          <span style="color:#fff;font-size:0.9rem;font-weight:600;">Segurança Digital com IA</span>
+        </div>
+        <div class="flyer-subtitle">Proteja seus dados, senhas e privacidade. IA que monitora ameaças em tempo real.</div>
+        <div class="features">
+          <div class="feature feature-red"><span class="feature-icon">🔒</span> Cofre de senhas criptografado</div>
+          <div class="feature feature-red"><span class="feature-icon">📡</span> Scanner de ameaças com IA</div>
+          <div class="feature feature-red"><span class="feature-icon">🛡️</span> Firewall inteligente</div>
+          <div class="feature feature-red"><span class="feature-icon">📊</span> Relatórios de segurança</div>
+        </div>
+        <div class="cta-area">
+          <a class="cta-btn cta-red" href="https://exagrama12-creator.github.io/titans-security/" target="_blank">Proteger Agora →</a>
+          <div class="cta-url">exagrama12-creator.github.io/titans-security</div>
+        </div>
+        <div class="flyer-brand">🛡️ Proteção Total • Grátis</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ═══ ROTEIRO DO VÍDEO ═══ -->
+  <div class="roteiro">
+    <h2>🎬 Roteiro — Vídeo 15 segundos (pra gravar no CapCut)</h2>
+
+    <h3>⏱️ Cena 1 (0-3s) — Gancho</h3>
+    <p class="time">0:00 - 0:03</p>
+    <div class="narration">"Você sabia que existe uma IA que programa PRA VOCÊ?"</div>
+    <p>🎥 Tela preta → Logo CodeForge aparece com brilho</p>
+
+    <h3>⏱️ Cena 2 (3-7s) — Demonstração</h3>
+    <p class="time">0:03 - 0:07</p>
+    <div class="narration">"É só falar em português o que você quer... e a IA cria o código completo na hora!"</div>
+    <p>🎥 Tela do CodeForge com alguém digitando "cria um site de portfólio" → IA respondendo</p>
+
+    <h3>⏱️ Cena 3 (7-11s) — Impacto</h3>
+    <p class="time">0:07 - 0:11</p>
+    <div class="narration">"10 programadores de inteligência artificial, trabalhando 24 horas. De graça."</div>
+    <p>🎥 Mostrar os ícones dos agentes aparecendo um por um</p>
+
+    <h3>⏱️ Cena 4 (11-15s) — CTA</h3>
+    <p class="time">0:11 - 0:15</p>
+    <div class="narration">"Link na bio. CodeForge — sua empresa de programação com IA."</div>
+    <p>🎥 Logo grande + URL + "ACESSE GRÁTIS" piscando</p>
+
+    <hr style="border-color:#333;margin:1.5rem 0;">
+    <h3>🎵 Sugestão de Música</h3>
+    <p>Use uma trilha tecnológica/energética no CapCut. Busque: "tech corporate" ou "futuristic" nos sons gratuitos.</p>
+
+    <h3>📱 Como Gravar</h3>
+    <p>1. Abra o <strong>CapCut</strong> no celular (grátis)<br>
+    2. Grave a tela do site funcionando<br>
+    3. Adicione o texto narrado como <strong>legendas automáticas</strong><br>
+    4. Use a voz do CapCut (Text-to-Speech em português)<br>
+    5. Adicione a música de fundo<br>
+    6. Exporte e poste!</p>
+  </div>
+
+  <p class="screenshot-tip">💡 No Chrome: Ctrl+Shift+S → selecione o flyer → salva como imagem PNG</p>
+
+</body>
+</html>
