@@ -56,7 +56,7 @@ function renderSidebar() {
   FORGE_AGENTS.forEach(function(a) {
     if (a.id === 'commander') return;
     h += '<div class="sidebar-item ' + (currentAgent===a.id?'active':'') + '" onclick="switchToAgent(\'' + a.id + '\')">' +
-      '<div class="agent-icon" style="background:' + a.color + '20;color:' + a.color + ';">' + a.icon + '</div>' +
+      '<div class="agent-icon" style="background:' + a.color + '20;color:' + a.color + ';overflow:hidden;">' + (a.avatar ? '<img src="' + a.avatar + '" style="width:100%;height:100%;border-radius:8px;">' : a.icon) + '</div>' +
       '<div><span class="agent-name">' + a.name + '</span><span class="agent-role">' + a.role + '</span></div></div>';
   });
   h += '</div>';
@@ -78,7 +78,8 @@ function renderMainPanels() {
     '<div class="panel" id="panel-editor">' + renderEditorPanel() + '</div>' +
     '<div class="panel" id="panel-projects">' + renderProjectsPanel() + '</div>' +
     '<div class="panel" id="panel-team">' + renderTeamPanel() + '</div>' +
-    '<div class="panel" id="panel-settings">' + renderSettingsPanel() + '</div>';
+    '<div class="panel" id="panel-settings">' + renderSettingsPanel() + '</div>' +
+    '<div class="panel" id="panel-finance">' + (typeof renderFinancePanel === 'function' ? renderFinancePanel() : '') + '</div>';
 }
 
 /* ═══ CHAT PANEL ═══ */
@@ -132,7 +133,7 @@ function renderTeamPanel() {
   FORGE_AGENTS.forEach(function(a) {
     h += '<div class="agent-card" onclick="switchToAgent(\'' + a.id + '\')" style="cursor:pointer;">';
     h += '<div class="agent-card-header">';
-    h += '<div class="agent-card-icon" style="background:' + a.color + '20;color:' + a.color + ';">' + a.icon + '</div>';
+    h += '<div class="agent-card-icon" style="background:' + a.color + '20;color:' + a.color + ';overflow:hidden;">' + (a.avatar ? '<img src="' + a.avatar + '" style="width:100%;height:100%;border-radius:12px;">' : a.icon) + '</div>';
     h += '<div class="agent-card-info"><h4>' + a.name + '</h4><div class="role">' + a.role + '</div></div></div>';
     h += '<div class="agent-card-desc">' + a.desc + '</div>';
     h += '<div class="agent-card-skills">';
@@ -165,7 +166,7 @@ function renderChatMessages() {
     var text = formatMessage(m.message);
     var time = new Date(m.timestamp).toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit' });
     return '<div class="msg ' + (isUser ? 'user' : 'ai') + '">' +
-      '<div class="msg-avatar" style="' + (isUser ? '' : 'background:linear-gradient(135deg,' + agent.color + ',' + agent.color + '80);') + '">' + (isUser ? '👑' : agent.icon) + '</div>' +
+      '<div class="msg-avatar" style="' + (isUser ? '' : 'background:linear-gradient(135deg,' + agent.color + ',' + agent.color + '80);overflow:hidden;') + '">' + (isUser ? '👑' : (agent.avatar ? '<img src="' + agent.avatar + '" style="width:100%;height:100%;border-radius:10px;">' : agent.icon)) + '</div>' +
       '<div class="msg-body">' +
       '<div class="msg-meta">' + (isUser ? 'Você' : agent.icon + ' ' + agent.name) + ' • ' + time + '</div>' +
       '<div class="msg-content">' + text + '</div>' +
@@ -261,7 +262,7 @@ function switchPanel(panel) {
   panels.forEach(function(p) { p.classList.remove('active'); });
   
   // Show target
-  var target = panel === 'editor' || panel === 'projects' || panel === 'team' || panel === 'settings' ? panel : 'chat';
+  var target = panel === 'editor' || panel === 'projects' || panel === 'team' || panel === 'settings' || panel === 'finance' ? panel : 'chat';
   var el = document.getElementById('panel-' + target);
   if (el) el.classList.add('active');
 
@@ -278,7 +279,11 @@ function switchPanel(panel) {
 
 function switchToAgent(agentId) {
   currentAgent = agentId;
-  currentPanel = agentId;
+  if (agentId === 'zeus') {
+    currentPanel = 'finance';
+  } else {
+    currentPanel = agentId;
+  }
   renderApp();
 }
 

@@ -16,6 +16,7 @@ function renderEditorPanel() {
   html += '<button class="btn btn-sm btn-secondary" onclick="runEditorCode()" style="margin-left:auto;">▶ Executar</button>';
   html += '<button class="btn btn-sm btn-secondary" onclick="copyEditorCode()">📋 Copiar</button>';
   html += '<button class="btn btn-sm btn-secondary" onclick="downloadEditorCode()">💾 Baixar</button>';
+  html += '<button class="btn btn-sm btn-secondary" onclick="sendToVulcan()" style="background:linear-gradient(135deg,#ff4500,#ff6b35);color:#fff;border:none;">🔨 Enviar pro Vulcan</button>';
   html += '</div>';
 
   html += '<div class="editor-container">';
@@ -104,4 +105,56 @@ function sendToEditor(btn) {
   }
   switchPanel('editor');
   showToast('📤 Código enviado para o editor!', 'success');
+}
+
+/* ═══ ENVIAR PRO VULCAN ═══ */
+function sendToVulcan() {
+  var editor = document.getElementById('codeEditor');
+  if (!editor || !editor.value.trim()) {
+    showToast('⚠️ Escreva ou cole algum código primeiro!', 'error');
+    return;
+  }
+  
+  var code = editor.value;
+  var vulcanUrl = 'https://exagrama12-creator.github.io/vulcan/';
+  
+  // Salvar no localStorage compartilhado (bridge)
+  var bridgeData = {
+    code: code,
+    lang: editorLang,
+    projectName: 'Projeto CodeForge',
+    timestamp: Date.now(),
+    css: '',
+    js: ''
+  };
+  
+  // Extrair CSS e JS se for HTML
+  if (editorLang === 'html') {
+    var styleMatch = code.match(/<style[^>]*>([\s\S]*?)<\/style>/gi);
+    if (styleMatch) bridgeData.css = styleMatch.map(function(s) { return s.replace(/<\/?style[^>]*>/gi, ''); }).join('\n');
+    var scriptMatch = code.match(/<script(?![^>]*src)[^>]*>([\s\S]*?)<\/script>/gi);
+    if (scriptMatch) bridgeData.js = scriptMatch.map(function(s) { return s.replace(/<\/?script[^>]*>/gi, ''); }).join('\n');
+  }
+  
+  localStorage.setItem('vulcan_codeforge_bridge', JSON.stringify(bridgeData));
+  
+  // Abrir Vulcan em nova aba
+  var vulcanWindow = window.open(vulcanUrl, 'vulcan-forge');
+  
+  // Tentar enviar via postMessage após carregar
+  if (vulcanWindow) {
+    setTimeout(function() {
+      try {
+        vulcanWindow.postMessage({
+          type: 'codeforge-export',
+          code: bridgeData.code,
+          css: bridgeData.css,
+          js: bridgeData.js,
+          projectName: bridgeData.projectName
+        }, '*');
+      } catch(e) {}
+    }, 3000);
+  }
+  
+  showToast('🔨 Código enviado pro Vulcan! Abrindo...', 'success');
 }
