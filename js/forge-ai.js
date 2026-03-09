@@ -3,7 +3,7 @@
    ═══════════════════════════════════════════════════════════ */
 
 var FORGE_API_KEY = ''; // User sets via UI
-var FORGE_MODELS = ['gemini-2.5-flash', 'gemini-2.0-flash-lite', 'gemini-2.0-flash'];
+var FORGE_MODELS = ['gemini-2.5-flash', 'gemini-2.5-flash-lite', 'gemini-2.0-flash-lite'];
 
 function getForgeApiKey() {
   return localStorage.getItem('codeforge_apikey') || '';
@@ -34,22 +34,28 @@ async function callForgeAI(userMessage, agentId) {
     generationConfig: { temperature: 0.7, maxOutputTokens: 8192 }
   };
 
-  // Tentar múltiplos modelos
-  for (var i = 0; i < FORGE_MODELS.length; i++) {
-    var model = FORGE_MODELS[i];
-    var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
-    try {
-      var resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-      if (resp.ok) {
-        var data = await resp.json();
-        var text = data.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text) return text;
+  // Tentar múltiplos modelos com retry
+  for (var retry = 0; retry < 2; retry++) {
+    for (var i = 0; i < FORGE_MODELS.length; i++) {
+      var model = FORGE_MODELS[i];
+      var url = 'https://generativelanguage.googleapis.com/v1beta/models/' + model + ':generateContent?key=' + apiKey;
+      try {
+        var resp = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+        if (resp.ok) {
+          var data = await resp.json();
+          var text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+          if (text) return text;
+        }
+        if (resp.status === 429) continue;
+        if (resp.status === 403) throw new Error('Chave API inválida.');
+      } catch(e) {
+        if (e.message === 'Chave API inválida.') throw e;
+        continue;
       }
-      if (resp.status === 429) continue;
-      if (resp.status === 403) throw new Error('Chave API inválida.');
-    } catch(e) {
-      if (e.message === 'Chave API inválida.') throw e;
-      continue;
+    }
+    // Se falhou todos os modelos, esperar antes de tentar de novo
+    if (retry < 1) {
+      await new Promise(function(r) { setTimeout(r, 15000); });
     }
   }
   throw new Error('IA temporariamente indisponível. Tente novamente em 1 minuto.');
